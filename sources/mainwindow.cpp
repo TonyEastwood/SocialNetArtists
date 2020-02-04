@@ -12,3 +12,10 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    MainAppWindow *mainAppWin = new MainAppWindow();
+    this->hide();
+    mainAppWin->show();
+}

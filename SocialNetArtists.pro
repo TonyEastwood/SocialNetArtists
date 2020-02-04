@@ -17,13 +17,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    sources/mainwindow.cpp
+    sources/mainappwindow.cpp \
+    sources/mainwindow.cpp \
+    sources/openglviewer.cpp
 
 HEADERS += \
-    headers/mainwindow.h
+    headers/mainappwindow.h \
+    headers/mainwindow.h \
+    headers/openglviewer.h
 
 FORMS += \
-    ui/mainwindow.ui
+    ui/mainappwindow.ui \
+    ui/mainwindow.ui \
+    ui/openglviewer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
