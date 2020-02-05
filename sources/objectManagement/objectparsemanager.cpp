@@ -1,4 +1,4 @@
-#include "../headers/objectparsemanager.h"
+#include "../../headers/objectManagement/objectparsemanager.h"
 
 ObjectParseManager::ObjectParseManager()
 {

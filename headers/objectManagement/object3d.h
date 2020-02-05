@@ -2,7 +2,7 @@
 #define OBJECT3D_H
 #include <QByteArray>
 #include <vector>
-#include <headers/objectinterface.h>
+#include "objectinterface.h"
 #include <QtMath>
 class object3d : public ObjectInterface
 {

@@ -2,7 +2,7 @@
 #define MAINAPPWINDOW_H
 
 #include <QMainWindow>
-#include "openglviewer.h"
+#include "OpenGlViewer/openglviewer.h"
 #include <QVBoxLayout>
 
 namespace Ui {

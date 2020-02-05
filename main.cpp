@@ -1,5 +1,5 @@
 #include "headers/mainwindow.h"
-#include "headers/objectparsemanager.h"
+#include "headers/objectManagement/objectparsemanager.h"
 #include <QApplication>
 #include "headers/mainappwindow.h"
 int main(int argc, char *argv[])

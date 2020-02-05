@@ -1,4 +1,4 @@
-#include "../headers/object3d.h"
+#include "../../headers/objectManagement/object3d.h"
 
 object3d::object3d()
 {

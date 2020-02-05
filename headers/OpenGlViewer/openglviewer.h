@@ -5,7 +5,7 @@
 #include <QMouseEvent>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
-#include "headers/object3d.h"
+#include "headers/objectManagement/object3d.h"
 //#include <QtOpenGL>
 //#include <QOpenGLShaderProgram>
 //#include <QOpenGLTexture>

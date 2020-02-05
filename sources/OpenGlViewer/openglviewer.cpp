@@ -1,4 +1,4 @@
-#include "headers/openglviewer.h"
+#include "../../headers/OpenGlViewer/openglviewer.h"
 
 #include "ui_openglviewer.h"
 

@@ -1,6 +1,6 @@
 #ifndef OBJECTPARSEMANAGER_H
 #define OBJECTPARSEMANAGER_H
-#include "headers/object3d.h"
+#include "object3d.h"
 #include <QDebug>
 class ObjectParseManager
 {

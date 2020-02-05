@@ -19,24 +19,24 @@ SOURCES += \
     main.cpp \
     sources/mainappwindow.cpp \
     sources/mainwindow.cpp \
-    sources/object3d.cpp \
-    sources/objectinterface.cpp \
-    sources/objectparsemanager.cpp \
-    sources/openglviewer.cpp
+    sources/objectManagement/object3d.cpp \
+    sources/objectManagement/objectinterface.cpp \
+    sources/objectManagement/objectparsemanager.cpp \
+    sources/OpenGlViewer/openglviewer.cpp
 
 HEADERS += \
     headers/mainappwindow.h \
     headers/mainwindow.h \
-    headers/object3d.h \
-    headers/objectDataStructures.h \
-    headers/objectinterface.h \
-    headers/objectparsemanager.h \
-    headers/openglviewer.h
+    headers/objectManagement/object3d.h \
+    headers/objectManagement/objectDataStructures.h \
+    headers/objectManagement/objectinterface.h \
+    headers/objectManagement/objectparsemanager.h \
+    headers/OpenGlViewer/openglviewer.h
 
 FORMS += \
     ui/mainappwindow.ui \
     ui/mainwindow.ui \
-    ui/openglviewer.ui
+    ui/OpenGlViewer/openglviewer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
