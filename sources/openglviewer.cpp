@@ -95,8 +95,10 @@ void OpenGlViewer::paintGL()
     glLoadIdentity(); // load matrix
                       //    glOrtho(-openGlwidth, openGlwidth, openGlheight, -openGlheight, -500,
                       //            500); // set matrix scope (x,y,z)
-    glOrtho(-1, 1, 1, -1, -1,
-            1); // set matrix scope (x,y,z)
+    glOrtho(-2 * drawObject.getMaxOriginAxis().x, 2 * drawObject.getMaxOriginAxis().x,
+            2 * drawObject.getMaxOriginAxis().y, -2 * drawObject.getMaxOriginAxis().x,
+            -2 * drawObject.getMaxOriginAxis().z,
+            2 * drawObject.getMaxOriginAxis().z); // set matrix scope (x,y,z)
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -118,7 +120,7 @@ void OpenGlViewer::paintGL()
     }
     glEnd();
     glBegin(GL_LINES);
-    glColor3f(0.0f, 0.0f, 0.0f);
+    glColor3f(0.0f, 1.0f, 0.0f);
     for (int i = 0; i < quantityTriangles; ++i)
     {
 
