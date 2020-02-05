@@ -18,21 +18,51 @@ object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
     QFile stlFile(fileName);
     if (stlFile.open(QIODevice::ReadOnly))
     {
-        object.setHeaderInfo(stlFile.read(80));                                   // set header info
-        uint quantityTriangles = *((uint*)stlFile.read(4).toStdString().c_str()); // get quantity triangles
+        object.setHeaderInfo(stlFile.read(80));                                    // set header info
+        uint quantitytriangle3d = *((uint*)stlFile.read(4).toStdString().c_str()); // get quantity triangle3d
 
-        for (uint i = 0; i < quantityTriangles; i++)
+        for (uint i = 0; i < quantitytriangle3d; i++)
         {
-            auto normal = to3dPoint(stlFile.read(12)); // get triangles normal
+            auto normal = to3dPoint(stlFile.read(12)); // get triangle3d normal
             auto v1 = to3dPoint(stlFile.read(12));
             auto v2 = to3dPoint(stlFile.read(12));
             auto v3 = to3dPoint(stlFile.read(12));
 
-            object.addTriangles(primitives::triangles(
-                normal, v1, v2, v3)); // add triangles to triangles array that object contain
+            object.addtriangle3d(primitives::triangle3d(
+                normal, v1, v2, v3)); // add triangle3d to triangle3d array that object contain
             stlFile.read(2);          // miss two bytes
         }
     }
+    else
+        qDebug() << "Cannot open the file " << fileName;
+    return object;
+}
+
+object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
+{
+    object3d object;
+    QFile stlFile(fileName);
+    if (stlFile.open(QIODevice::ReadOnly))
+    {
+        std::vector<primitives::point3d> vertex;
+
+        object.setHeaderInfo(stlFile.read(80));                                    // set header info
+        uint quantitytriangle3d = *((uint*)stlFile.read(4).toStdString().c_str()); // get quantity triangle3d
+
+        for (uint i = 0; i < quantitytriangle3d; i++)
+        {
+            auto normal = to3dPoint(stlFile.read(12)); // get triangle3d normal
+            auto v1 = to3dPoint(stlFile.read(12));
+            auto v2 = to3dPoint(stlFile.read(12));
+            auto v3 = to3dPoint(stlFile.read(12));
+
+            object.addtriangle3d(primitives::triangle3d(
+                normal, v1, v2, v3)); // add triangle3d to triangle3d array that object contain
+            stlFile.read(2);          // miss two bytes
+        }
+    }
+    else
+        qDebug() << "Cannot open the file " << fileName;
     return object;
 }
 /*!

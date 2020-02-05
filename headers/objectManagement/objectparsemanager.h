@@ -9,6 +9,7 @@ public:
 
     ~ObjectParseManager();
     object3d fromStlToObject(const QByteArray fileName);
+    object3d fromObjToObject(const QByteArray fileName);
 
 private:
     float toFloat(const QByteArray bytes);

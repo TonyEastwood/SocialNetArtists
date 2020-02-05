@@ -14,14 +14,14 @@ public:
     QByteArray getHeaderInfo() const;
     void setHeaderInfo(const QByteArray &value);
 
-    unsigned int getQuantityTriangles() const;
-    void addTriangles(const primitives::triangles _triangle);
-    std::vector<primitives::triangles> getTrianglesData();
+    unsigned int getQuantitytriangle3d() const;
+    void addtriangle3d(const primitives::triangle3d _triangle);
+    std::vector<primitives::triangle3d> gettriangle3dData();
     primitives::point3d getMaxOriginAxis() const;
 
 private:
     QByteArray headerInfo;
-    std::vector<primitives::triangles> trianglesData;
+    std::vector<primitives::triangle3d> triangle3dData;
     primitives::point3d maxOriginAxis{
         0, 0, 0
     }; // max value on axis X,Y,Z (need to set start scale in openglViewer

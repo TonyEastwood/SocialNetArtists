@@ -12,9 +12,18 @@ struct point3d
     float z;
 };
 
-struct triangles
+struct line3d
 {
-    triangles(point3d _normal, point3d _point1, point3d _point2, point3d _point3)
+    line3d(point3d _point1, point3d _point2)
+        : point1(_point1)
+        , point2(_point2){};
+    point3d point1;
+    point3d point2;
+};
+
+struct triangle3d
+{
+    triangle3d(point3d _normal, point3d _point1, point3d _point2, point3d _point3)
         : normal(_normal)
         , point1(_point1)
         , point2(_point2)
@@ -23,6 +32,21 @@ struct triangles
     point3d point1;
     point3d point2;
     point3d point3;
+};
+
+struct face3d
+{
+    face3d(point3d _normal, point3d _point1, point3d _point2, point3d _point3, point3d _point4)
+        : normal(_normal)
+        , point1(_point1)
+        , point2(_point2)
+        , point3(_point3)
+        , point4(_point4){};
+    point3d normal;
+    point3d point1;
+    point3d point2;
+    point3d point3;
+    point3d point4;
 };
 }
 #endif // OBJECTDATASTRUCTURES_H

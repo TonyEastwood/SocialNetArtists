@@ -107,11 +107,11 @@ void OpenGlViewer::paintGL()
     glRotatef(rotate_y, 0.0, 1.0, 0.0); // rotate y
 
     // cube();
-    uint quantityTriangles = drawObject.getQuantityTriangles();
-    std::vector<primitives::triangles> data = drawObject.getTrianglesData();
+    uint quantitytriangle3d = drawObject.getQuantitytriangle3d();
+    std::vector<primitives::triangle3d> data = drawObject.gettriangle3dData();
     glBegin(GL_TRIANGLES);
     glColor3f(1.0f, 1.0f, 0.0f);
-    for (int i = 0; i < quantityTriangles; ++i)
+    for (int i = 0; i < quantitytriangle3d; ++i)
     {
 
         glVertex3f(data[i].point1.x, data[i].point1.y, data[i].point1.z);
@@ -121,7 +121,7 @@ void OpenGlViewer::paintGL()
     glEnd();
     glBegin(GL_LINES);
     glColor3f(0.0f, 1.0f, 0.0f);
-    for (int i = 0; i < quantityTriangles; ++i)
+    for (int i = 0; i < quantitytriangle3d; ++i)
     {
 
         glVertex3f(data[i].point1.x, data[i].point1.y, data[i].point1.z);

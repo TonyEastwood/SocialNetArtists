@@ -27,36 +27,36 @@ void object3d::setHeaderInfo(const QByteArray &value)
     headerInfo = value;
 }
 /*!
-     \brief get quantity triangles.
+     \brief get quantity triangle3d.
 
       detail...
  */
-unsigned int object3d::getQuantityTriangles() const
+unsigned int object3d::getQuantitytriangle3d() const
 {
-    return trianglesData.size();
+    return triangle3dData.size();
 }
 /*!
-     \brief set quantity triangles.
+     \brief set quantity triangle3d.
 
       detail...
  */
 
 /*!
-     \brief add triangle to triangles array current object.
+     \brief add triangle to triangle3d array current object.
 
       detail...
  */
-void object3d::addTriangles(const primitives::triangles _triangle)
+void object3d::addtriangle3d(const primitives::triangle3d _triangle)
 {
     setMaxOriginAxis(_triangle.point1);
     setMaxOriginAxis(_triangle.point2);
     setMaxOriginAxis(_triangle.point3);
-    trianglesData.push_back(_triangle);
+    triangle3dData.push_back(_triangle);
 }
 
-std::vector<primitives::triangles> object3d::getTrianglesData()
+std::vector<primitives::triangle3d> object3d::gettriangle3dData()
 {
-    return trianglesData;
+    return triangle3dData;
 }
 
 primitives::point3d object3d::getMaxOriginAxis() const
