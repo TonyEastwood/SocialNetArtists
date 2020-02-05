@@ -19,18 +19,19 @@ SOURCES += \
     main.cpp \
     sources/mainappwindow.cpp \
     sources/mainwindow.cpp \
+    sources/object3d.cpp \
     sources/objectinterface.cpp \
     sources/objectparsemanager.cpp \
-    sources/openglviewer.cpp \
-    sources/supportedFormat/stlformat.cpp
+    sources/openglviewer.cpp
 
 HEADERS += \
     headers/mainappwindow.h \
     headers/mainwindow.h \
+    headers/object3d.h \
+    headers/objectDataStructures.h \
     headers/objectinterface.h \
     headers/objectparsemanager.h \
-    headers/openglviewer.h \
-    headers/supportedFormat/stlformat.h
+    headers/openglviewer.h
 
 FORMS += \
     ui/mainappwindow.ui \

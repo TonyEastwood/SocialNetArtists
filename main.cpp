@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     qDebug() << "Start";
     ObjectParseManager parser;
-    parser.parseStlObject("test2.stl");
+    object3d testObject = parser.fromStlToObject("test2.stl");
     // MainWindow w;
     // w.show();
     qDebug() << "End";
