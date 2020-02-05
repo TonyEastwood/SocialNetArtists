@@ -15,7 +15,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    MainAppWindow *mainAppWin = new MainAppWindow();
-    this->hide();
-    mainAppWin->show();
+    // MainAppWindow *mainAppWin = new MainAppWindow(;
+    // this->hide();
+    // mainAppWin->show();
 }

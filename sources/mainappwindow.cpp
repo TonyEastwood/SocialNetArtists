@@ -3,7 +3,7 @@
 
 #include <QLabel>
 
-MainAppWindow::MainAppWindow(QWidget *parent)
+MainAppWindow::MainAppWindow(object3d _object, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainAppWindow)
 {
@@ -15,7 +15,7 @@ MainAppWindow::MainAppWindow(QWidget *parent)
     //[/unused]
     ui->setupUi(this);
 
-    openGlViewer = new OpenGlViewer();
+    openGlViewer = new OpenGlViewer(_object);
 
     mainLayout = new QHBoxLayout();
     mainLayout->addWidget(openGlViewer);

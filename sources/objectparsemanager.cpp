@@ -20,7 +20,6 @@ object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
     {
         object.setHeaderInfo(stlFile.read(80));                                   // set header info
         uint quantityTriangles = *((uint*)stlFile.read(4).toStdString().c_str()); // get quantity triangles
-        object.setQuantityTriangles(quantityTriangles);
 
         for (uint i = 0; i < quantityTriangles; i++)
         {

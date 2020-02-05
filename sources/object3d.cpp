@@ -32,17 +32,14 @@ void object3d::setHeaderInfo(const QByteArray &value)
  */
 unsigned int object3d::getQuantityTriangles() const
 {
-    return quantityTriangles;
+    return trianglesData.size();
 }
 /*!
      \brief set quantity triangles.
 
       detail...
  */
-void object3d::setQuantityTriangles(unsigned int value)
-{
-    quantityTriangles = value;
-}
+
 /*!
      \brief add triangle to triangles array current object.
 
@@ -51,4 +48,9 @@ void object3d::setQuantityTriangles(unsigned int value)
 void object3d::addTriangles(const object3d::triangles _triangle)
 {
     trianglesData.push_back(_triangle);
+}
+
+std::vector<object3d::triangles> object3d::getTrianglesData()
+{
+    return trianglesData;
 }

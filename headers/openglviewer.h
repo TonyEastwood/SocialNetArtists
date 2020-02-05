@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
+#include "headers/object3d.h"
 //#include <QtOpenGL>
 //#include <QOpenGLShaderProgram>
 //#include <QOpenGLTexture>
@@ -18,7 +19,7 @@ class OpenGlViewer : public QGLWidget, protected QOpenGLFunctions
     Q_OBJECT
 
 public:
-    explicit OpenGlViewer(QWidget *parent = nullptr);
+    explicit OpenGlViewer(object3d _object, QWidget *parent = nullptr);
     ~OpenGlViewer() override;
 
 protected:
@@ -31,8 +32,8 @@ protected:
     // void timerEvent(QTimerEvent *e) override;
 
 private:
-    int openGlwidth, openGlheight; // window size
-
+    int openGlwidth, openGlheight;          // window size
+    object3d drawObject;                    // object that need to draw
     float x_pos, y_pos, rotate_y, rotate_x; // rotate values
     Ui::OpenGlViewer *ui;
 };

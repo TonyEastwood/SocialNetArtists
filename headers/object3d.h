@@ -15,12 +15,11 @@ public:
     void setHeaderInfo(const QByteArray &value);
 
     unsigned int getQuantityTriangles() const;
-    void setQuantityTriangles(unsigned int value);
     void addTriangles(const triangles _triangle);
+    std::vector<triangles> getTrianglesData();
 
 private:
     QByteArray headerInfo;
-    unsigned int quantityTriangles;
     std::vector<triangles> trianglesData;
 };
 

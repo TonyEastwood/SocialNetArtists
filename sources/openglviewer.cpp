@@ -2,11 +2,11 @@
 
 #include "ui_openglviewer.h"
 
-OpenGlViewer::OpenGlViewer(QWidget *parent)
+OpenGlViewer::OpenGlViewer(object3d _object, QWidget *parent)
     : QGLWidget(parent)
 {
     ui->setupUi(this);
-
+    drawObject = _object;
     openGlwidth = 500;                       // window width
     openGlheight = 500;                      // window height
     setFormat(QGLFormat(QGL::DoubleBuffer)); // double buff
@@ -32,22 +32,8 @@ void OpenGlViewer::resizeGL(int w, int h)
     openGlwidth = w;
     openGlheight = h;
 }
-
-void OpenGlViewer::paintGL()
+void cube()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear buff image and deep
-    glMatrixMode(GL_PROJECTION);                        // set the matrix
-    glShadeModel(GL_SMOOTH);
-    glLoadIdentity(); // load matrix
-    glOrtho(-openGlwidth, openGlwidth, openGlheight, -openGlheight, -500,
-            500); // set matrix scope (x,y,z)
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glRotatef(rotate_x, 1.0, 0.0, 0.0); // rotate x
-    glRotatef(rotate_y, 0.0, 1.0, 0.0); // rotate y
-
     float value = 100;
 
     glBegin(GL_QUADS);
@@ -100,6 +86,52 @@ void OpenGlViewer::paintGL()
     glVertex3f(value, -value, value);
     glVertex3f(value, -value, -value);
     glEnd(); // End of drawing color-cube
+}
+void OpenGlViewer::paintGL()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear buff image and deep
+    glMatrixMode(GL_PROJECTION);                        // set the matrix
+    glShadeModel(GL_SMOOTH);
+    glLoadIdentity(); // load matrix
+                      //    glOrtho(-openGlwidth, openGlwidth, openGlheight, -openGlheight, -500,
+                      //            500); // set matrix scope (x,y,z)
+    glOrtho(-1, 1, 1, -1, -1,
+            1); // set matrix scope (x,y,z)
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glRotatef(rotate_x, 1.0, 0.0, 0.0); // rotate x
+    glRotatef(rotate_y, 0.0, 1.0, 0.0); // rotate y
+
+    // cube();
+    uint quantityTriangles = drawObject.getQuantityTriangles();
+    std::vector<primitives::triangles> data = drawObject.getTrianglesData();
+    glBegin(GL_TRIANGLES);
+    glColor3f(1.0f, 1.0f, 0.0f);
+    for (int i = 0; i < quantityTriangles; ++i)
+    {
+
+        glVertex3f(data[i].point1.x, data[i].point1.y, data[i].point1.z);
+        glVertex3f(data[i].point2.x, data[i].point2.y, data[i].point2.z);
+        glVertex3f(data[i].point3.x, data[i].point3.y, data[i].point3.z);
+    }
+    glEnd();
+    glBegin(GL_LINES);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    for (int i = 0; i < quantityTriangles; ++i)
+    {
+
+        glVertex3f(data[i].point1.x, data[i].point1.y, data[i].point1.z);
+        glVertex3f(data[i].point2.x, data[i].point2.y, data[i].point2.z);
+
+        glVertex3f(data[i].point2.x, data[i].point2.y, data[i].point2.z);
+        glVertex3f(data[i].point3.x, data[i].point3.y, data[i].point3.z);
+
+        glVertex3f(data[i].point1.x, data[i].point1.y, data[i].point1.z);
+        glVertex3f(data[i].point3.x, data[i].point3.y, data[i].point3.z);
+    }
+    glEnd();
 
     doubleBuffer();
 }
