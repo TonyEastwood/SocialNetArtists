@@ -19,12 +19,18 @@ SOURCES += \
     main.cpp \
     sources/mainappwindow.cpp \
     sources/mainwindow.cpp \
-    sources/openglviewer.cpp
+    sources/objectinterface.cpp \
+    sources/objectparsemanager.cpp \
+    sources/openglviewer.cpp \
+    sources/supportedFormat/stlformat.cpp
 
 HEADERS += \
     headers/mainappwindow.h \
     headers/mainwindow.h \
-    headers/openglviewer.h
+    headers/objectinterface.h \
+    headers/objectparsemanager.h \
+    headers/openglviewer.h \
+    headers/supportedFormat/stlformat.h
 
 FORMS += \
     ui/mainappwindow.ui \
@@ -35,3 +41,17 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew \
+    android/gradlew.bat \
+    android/res/values/libs.xml
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD/android
+}
