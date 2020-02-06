@@ -100,11 +100,11 @@ void OpenGlViewer::paintGL()
     glMatrixMode(GL_PROJECTION);                        // set the matrix
     glShadeModel(GL_SMOOTH);
     glLoadIdentity(); // load matrix
-    int scale = 3;
-    glOrtho(-scale * drawObject.getMaxOriginAxis().x, scale * drawObject.getMaxOriginAxis().x,
-            scale * drawObject.getMaxOriginAxis().y, -scale * drawObject.getMaxOriginAxis().y,
-            -scale * drawObject.getMaxOriginAxis().z,
-            scale * drawObject.getMaxOriginAxis().z); // set matrix scope (2*x,2*y,2*z)
+
+    glOrtho(-scaleWheel * drawObject.getMaxOriginAxis().x, scaleWheel * drawObject.getMaxOriginAxis().x,
+            scaleWheel * drawObject.getMaxOriginAxis().y, -scaleWheel * drawObject.getMaxOriginAxis().y,
+            -scaleWheel * drawObject.getMaxOriginAxis().z,
+            scaleWheel * drawObject.getMaxOriginAxis().z); // set matrix scope (2*x,2*y,2*z)
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -207,6 +207,12 @@ void OpenGlViewer::mouseReleaseEvent(QMouseEvent *e)
     x_pos = 0;
     y_pos = 0;
     // Mouse release position - mouse press position
+}
+
+void OpenGlViewer::wheelEvent(QWheelEvent *event)
+{
+    scaleWheel += event->angleDelta().y() / 100; // change scale when scroll wheel
+    update();
 }
 
 // void OpenGlViewer::timerEvent(QTimerEvent *e) {}
