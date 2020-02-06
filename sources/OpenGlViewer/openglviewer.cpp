@@ -23,6 +23,12 @@ void OpenGlViewer::initializeGL()
     initializeOpenGLFunctions();
     glDepthFunc(GL_LEQUAL);   // buff deep
     qglClearColor(Qt::black); // set background black
+    glEnable(GL_DEPTH_TEST);  // line that we can't see - become invisible
+
+    //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    //to enable transparency. In future version
+    //    uncomment glEnable(GL_BLEND);                         //to enable transparency. In future version
+    //    uncomment glClearColor(0.0, 0.0, 0.0, 0.0);           //to enable transparency. In future version
+    //    uncomment
 }
 
 void OpenGlViewer::resizeGL(int w, int h)
@@ -112,24 +118,27 @@ void OpenGlViewer::paintGL()
     std::vector<primitives::point3d> vertexData =
         drawObject.getVertex3dData(); // load vertex data from object
 
-    if (!drawObject.getLines3dData().empty()) // if lines array not empty -> draw lines
+    if (!drawObject.getFaces3dData().empty()) // if array of faces not empty -> draw faces
     {
-        std::vector<primitives::line3d> linesData =
-            drawObject.getLines3dData();                        // load lines data from object
-        uint quantityLines3d = drawObject.getQuantityLines3d(); // get quantity lines
-        glLineWidth(20);                                        // set line width
-        glBegin(GL_LINES);                                      // START LINES DRAWING
-        glColor3f(0.0f, 0.0f, 1.0f);                            // set line color
-        for (uint i = 0; i < quantityLines3d; ++i)
-        {
-            glVertex3f(vertexData[linesData[i].indexVertex1].x, vertexData[linesData[i].indexVertex1].y,
-                       vertexData[linesData[i].indexVertex1].z);
-            glVertex3f(vertexData[linesData[i].indexVertex2].x, vertexData[linesData[i].indexVertex2].y,
-                       vertexData[linesData[i].indexVertex2].z);
-        }
-        glEnd(); // END LINES DRAWING
-    }
+        std::vector<primitives::face3d> facesData = drawObject.getFaces3dData(); // load faces from object
+        uint quantityFaces3d = drawObject.getQuantityFaces3d();                  // get quantity lines
 
+        glBegin(GL_QUADS);           // START FACES DRAWING
+        glColor3f(0.0f, 1.0f, 1.0f); // set faces color
+        for (uint i = 0; i < quantityFaces3d; ++i)
+        {
+
+            glVertex3f(vertexData[facesData[i].indexVertex1].x, vertexData[facesData[i].indexVertex1].y,
+                       vertexData[facesData[i].indexVertex1].z);
+            glVertex3f(vertexData[facesData[i].indexVertex2].x, vertexData[facesData[i].indexVertex2].y,
+                       vertexData[facesData[i].indexVertex2].z);
+            glVertex3f(vertexData[facesData[i].indexVertex3].x, vertexData[facesData[i].indexVertex3].y,
+                       vertexData[facesData[i].indexVertex3].z);
+            glVertex3f(vertexData[facesData[i].indexVertex4].x, vertexData[facesData[i].indexVertex4].y,
+                       vertexData[facesData[i].indexVertex4].z);
+        }
+        glEnd(); // END TRIANGLES DRAWING
+    }
     if (!drawObject.getTrianglesData().empty()) // if triangle array not empty -> draw triangles
     {
         std::vector<primitives::triangle3d> trianglesData =
@@ -153,91 +162,22 @@ void OpenGlViewer::paintGL()
         glEnd(); // END TRIANGLES DRAWING
     }
 
-    if (!drawObject.getFaces3dData().empty()) // if array of faces not empty -> draw faces
+    if (!drawObject.getLines3dData().empty()) // if lines array not empty -> draw lines
     {
-        std::vector<primitives::face3d> facesData = drawObject.getFaces3dData(); // load faces from object
-        uint quantityFaces3d = drawObject.getQuantityFaces3d();                  // get quantity lines
-
-        glBegin(GL_QUADS);           // START FACES DRAWING
-        glColor3f(0.0f, 1.0f, 1.0f); // set faces color
-        for (uint i = 0; i < quantityFaces3d; ++i)
+        std::vector<primitives::line3d> linesData =
+            drawObject.getLines3dData();                        // load lines data from object
+        uint quantityLines3d = drawObject.getQuantityLines3d(); // get quantity lines
+        glLineWidth(20);                                        // set line width
+        glBegin(GL_LINES);                                      // START LINES DRAWING
+        glColor3f(1.0f, 0.0f, 0.0f);                            // set line color
+        for (uint i = 0; i < quantityLines3d; ++i)
         {
-
-            //            glVertex3f(-0.5f, -0.5f, 0.0f);
-            //            glVertex3f(-0.5f, 0.5f, 0.0f);
-            //            glVertex3f(0.5f, 0.5f, 0.0f);
-            //            glVertex3f(0.5f, -0.5f, 0.0f);
-
-            //            glVertex3f(-1, -1, 1);
-            //            glVertex3f(-1, 1, 1);
-            //            glVertex3f(-1, 1, -1);
-            //            glVertex3f(-1, -1, -1);
-            //            //-1 1 1
-            //            //-1 -1 -1
-            //            // 1 -1 1
-            //            // -1 1 -1
-
-            //            GLfloat p[12];
-            //            p[0] = vertexData[facesData[0].indexVertex1].x;
-            //            p[1] = vertexData[facesData[0].indexVertex1].y;
-            //            p[2] = vertexData[facesData[0].indexVertex1].z;
-
-            //            p[3] = vertexData[facesData[0].indexVertex2].x;
-            //            p[4] = vertexData[facesData[0].indexVertex2].y;
-            //            p[5] = vertexData[facesData[0].indexVertex2].z;
-
-            //            p[6] = vertexData[facesData[0].indexVertex3].x;
-            //            p[7] = vertexData[facesData[0].indexVertex3].y;
-            //            p[8] = vertexData[facesData[0].indexVertex3].z;
-
-            //            p[9] = vertexData[facesData[0].indexVertex4].x;
-            //            p[10] = vertexData[facesData[0].indexVertex4].y;
-            //            p[11] = vertexData[facesData[0].indexVertex4].z;
-
-            //            glVertex3f(p[0], p[1], p[2]);
-            //            glVertex3f(p[3], p[4], p[5]);
-            //            glVertex3f(p[6], p[7], p[8]);
-            //            glVertex3f(p[9], p[10], p[11]);
-            //            qDebug() << "\n>>>" << p[0] << p[1] << p[2];
-            //            qDebug() << ">>>" << p[3] << p[4] << p[5];
-            //            qDebug() << ">>>" << p[6] << p[7] << p[8];
-            //            qDebug() << ">>>" << p[9] << p[10] << p[11];
-            //            glVertex3f((GLfloat)vertexData[facesData[i].indexVertex1].x,
-            //                       (GLfloat)vertexData[facesData[i].indexVertex1].y,
-            //                       (GLfloat)vertexData[facesData[i].indexVertex1].z);
-            //            glVertex3f((GLfloat)vertexData[facesData[i].indexVertex2].x,
-            //                       (GLfloat)vertexData[facesData[i].indexVertex2].y,
-            //                       (GLfloat)vertexData[facesData[i].indexVertex2].z);
-            //            glVertex3f((GLfloat)vertexData[facesData[i].indexVertex3].x,
-            //                       (GLfloat)vertexData[facesData[i].indexVertex3].y,
-            //                       (GLfloat)vertexData[facesData[i].indexVertex3].z);
-            //            glVertex3f((GLfloat)vertexData[facesData[i].indexVertex4].x,
-            //                       (GLfloat)vertexData[facesData[i].indexVertex4].y,
-            //                       (GLfloat)vertexData[facesData[i].indexVertex4].z);
-
-            //            qDebug() << ">>>" << vertexData[facesData[i].indexVertex1].x
-            //                     << vertexData[facesData[i].indexVertex1].y <<
-            //                     vertexData[facesData[i].indexVertex1].z;
-            //            qDebug() << ">>>" << vertexData[facesData[i].indexVertex2].x
-            //                     << vertexData[facesData[i].indexVertex2].y <<
-            //                     vertexData[facesData[i].indexVertex2].z;
-            //            qDebug() << ">>>" << vertexData[facesData[i].indexVertex3].x
-            //                     << vertexData[facesData[i].indexVertex3].y <<
-            //                     vertexData[facesData[i].indexVertex3].z;
-            //            qDebug() << ">>>" << vertexData[facesData[i].indexVertex4].x
-            //                     << vertexData[facesData[i].indexVertex4].y <<
-            //                     vertexData[facesData[i].indexVertex4].z;
-
-            glVertex3f(vertexData[facesData[i].indexVertex1].x, vertexData[facesData[i].indexVertex1].y,
-                       vertexData[facesData[i].indexVertex1].z);
-            glVertex3f(vertexData[facesData[i].indexVertex2].x, vertexData[facesData[i].indexVertex2].y,
-                       vertexData[facesData[i].indexVertex2].z);
-            glVertex3f(vertexData[facesData[i].indexVertex3].x, vertexData[facesData[i].indexVertex3].y,
-                       vertexData[facesData[i].indexVertex3].z);
-            glVertex3f(vertexData[facesData[i].indexVertex4].x, vertexData[facesData[i].indexVertex4].y,
-                       vertexData[facesData[i].indexVertex4].z);
+            glVertex3f(vertexData[linesData[i].indexVertex1].x, vertexData[linesData[i].indexVertex1].y,
+                       vertexData[linesData[i].indexVertex1].z);
+            glVertex3f(vertexData[linesData[i].indexVertex2].x, vertexData[linesData[i].indexVertex2].y,
+                       vertexData[linesData[i].indexVertex2].z);
         }
-        glEnd(); // END TRIANGLES DRAWING
+        glEnd(); // END LINES DRAWING
     }
 
     doubleBuffer();

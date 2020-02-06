@@ -55,7 +55,7 @@ object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
     QFile objFile(fileName);
     if (objFile.open(QIODevice::ReadOnly))
     {
-        object.setHeaderInfo("ObjFile"); // set header info
+        QList<QByteArray> values; // values that will contains parse data
         QByteArray currentLine;
         float x, y, z;
         uint p[12] = { 0 };
@@ -63,69 +63,65 @@ object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
         {
             currentLine = objFile.readLine();
 
-            if (currentLine[0] == 'v')
+            if (currentLine[0] == 'v') // if current line containts vertex coords
             {
-                if (currentLine[1] == 't' || currentLine[1] == 'n')
+                if (currentLine[1] == 't'
+                    || currentLine[1]
+                        == 'n') // ignore texture and normal direction [need to modify in future version]
                     continue;
 
-                QList<QByteArray> values = currentLine.mid(2).trimmed().split(' ');
+                values = currentLine.mid(2).trimmed().split(' '); // parse coords from line
                 x = values[0].toFloat();
                 y = values[1].toFloat();
                 z = values[2].toFloat();
 
-                object.addVertex3d({ x, y, z });
+                object.addVertex3d({ x, y, z }); // add vertex to array
             }
-            else if (currentLine[0] == 'l')
+            else if (currentLine[0] == 'l') // if current line contains data about line3d
             {
-                QList<QByteArray> values = currentLine.mid(2).trimmed().split(' ');
-                p[0] = values[0].toUInt();
-                p[1] = values[1].toUInt();
+                values = currentLine.mid(2).trimmed().split(' ');             // parse vertex data from line
+                object.addLine3d({ values[0].toUInt(), values[1].toUInt() }); // add line to lines3D array
+            }
+            else if (currentLine[0] == 'f') // if current line contains data about faces or triangles
+            {
+                QList<QByteArray> valuesAfterFaceParse; // data after parsing separate vertex of face
 
-                // sscanf(currentLine.mid(2), "%d %d\n", &p[0], &p[1]);
-                object.addLine3d({ p[0], p[1] });
-            }
-            else if (currentLine[0] == 'f')
-            {
-                QList<QByteArray> values = currentLine.mid(2).trimmed().split(' ');
-                if (values.size() == 4)
+                values = currentLine.mid(2).trimmed().split(' '); // parse faces data from line
+
+                if (values.size() == 4) // if current data relate to face
                 {
-                    QList<QByteArray> values2;
                     for (uint i = 0, j = 0; i < 4; ++i, j += 3)
                     {
-                        values2 = values[i].split('/');
-                        p[j] = values2[0].toUInt();
+                        valuesAfterFaceParse = values[i].split('/'); // parse each vertex in face
+                        p[j] = valuesAfterFaceParse[0].toUInt();     // get vertex index
                     }
-
-                    //                if (sscanf(currentLine.mid(2), "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n",
-                    //                &p[0], &p[1], &p[2],
-                    //                           &p[3], &p[4], &p[5], &p[6], &p[7], &p[8], &p[9], &p[10],
-                    //                           &p[11])
-                    //                    == 12)
-                    //                {
-                    for (uint i = 0; i < 12; ++i)
+                    for (uint i = 0; i < 12;
+                         ++i) // correct indexes. Index in obj format start from 1, in c++ from 0, so..
                         p[i] -= 1;
-                    object.addLine3d({ p[0], p[3] });
+
+                    object.addLine3d({ p[0], p[3] }); // add 4 lines ( face = 4 lines) to lines array
                     object.addLine3d({ p[3], p[6] });
                     object.addLine3d({ p[6], p[9] });
                     object.addLine3d({ p[0], p[9] });
 
-                    object.addFace3d({ 0, p[0], p[3], p[6], p[9] }); // replace 0 with normal!!!!!!
+                    object.addFace3d({ 0, p[0], p[3], p[6], p[9] }); // add face to array of faces
                 }
-                else if (values.size() == 3)
+                else if (values.size() == 3) // if current data relate to triangles
                 {
-                    QList<QByteArray> values2;
                     for (uint i = 0, j = 0; i < 3; ++i, j += 3)
                     {
-                        values2 = values[i].split('/');
-                        p[j] = values2[0].toUInt();
+                        valuesAfterFaceParse = values[i].split('/'); // parse each vertex in triangles
+                        p[j] = valuesAfterFaceParse[0].toUInt();     // get vertex index
                     }
-                    for (uint i = 0; i < 12; ++i)
+                    for (uint i = 0; i < 12;
+                         ++i) // correct indexes. Index in obj format start from 1, in c++ from 0, so..
                         p[i] -= 1;
-                    object.addLine3d({ p[0], p[3] });
+
+                    object.addLine3d({ p[0], p[3] }); // add 3 lines ( triangles = 3 lines) to lines array
                     object.addLine3d({ p[3], p[6] });
                     object.addLine3d({ p[6], p[0] });
 
-                    object.addTriangle3d({ 0, p[0], p[3], p[6] }); // replace 0 with normal!!!!
+                    object.addTriangle3d({ 0, p[0], p[3], p[6] }); // add triangles to array of triangles
                 }
             }
         }
