@@ -4,17 +4,19 @@
 
 #include "object3d.h"
 #include "stdio.h"
-class ObjectParseManager {
- public:
-  ObjectParseManager();
+#include <QList>
+class ObjectParseManager
+{
+public:
+    ObjectParseManager();
 
-  ~ObjectParseManager();
-  object3d fromStlToObject(const QByteArray fileName);
-  object3d fromObjToObject(const QByteArray fileName);
+    ~ObjectParseManager();
+    object3d fromStlToObject(const QByteArray fileName);
+    object3d fromObjToObject(const QByteArray fileName);
 
- private:
-  float toFloat(const QByteArray bytes);
-  primitives::point3d to3dPoint(QByteArray bytes);
+private:
+    float toFloat(const QByteArray bytes);
+    primitives::point3d to3dPoint(QByteArray bytes);
 };
 
-#endif  // OBJECTPARSEMANAGER_H
+#endif // OBJECTPARSEMANAGER_H

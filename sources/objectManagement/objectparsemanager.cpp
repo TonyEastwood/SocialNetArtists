@@ -67,20 +67,41 @@ object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
             {
                 if (currentLine[1] == 't' || currentLine[1] == 'n')
                     continue;
-                sscanf(currentLine.mid(2), "%f %f %f\n", &x, &y, &z);
+
+                QList<QByteArray> values = currentLine.mid(2).trimmed().split(' ');
+                x = values[0].toFloat();
+                y = values[1].toFloat();
+                z = values[2].toFloat();
+
                 object.addVertex3d({ x, y, z });
             }
             else if (currentLine[0] == 'l')
             {
-                sscanf(currentLine.mid(2), "%d %d\n", &p[0], &p[1]);
+                QList<QByteArray> values = currentLine.mid(2).trimmed().split(' ');
+                p[0] = values[0].toUInt();
+                p[1] = values[1].toUInt();
+
+                // sscanf(currentLine.mid(2), "%d %d\n", &p[0], &p[1]);
                 object.addLine3d({ p[0], p[1] });
             }
             else if (currentLine[0] == 'f')
             {
-                if (sscanf(currentLine.mid(2), "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", &p[0], &p[1], &p[2],
-                           &p[3], &p[4], &p[5], &p[6], &p[7], &p[8], &p[9], &p[10], &p[11])
-                    == 12)
+                QList<QByteArray> values = currentLine.mid(2).trimmed().split(' ');
+                if (values.size() == 4)
                 {
+                    QList<QByteArray> values2;
+                    for (uint i = 0, j = 0; i < 4; ++i, j += 3)
+                    {
+                        values2 = values[i].split('/');
+                        p[j] = values2[0].toUInt();
+                    }
+
+                    //                if (sscanf(currentLine.mid(2), "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n",
+                    //                &p[0], &p[1], &p[2],
+                    //                           &p[3], &p[4], &p[5], &p[6], &p[7], &p[8], &p[9], &p[10],
+                    //                           &p[11])
+                    //                    == 12)
+                    //                {
                     for (uint i = 0; i < 12; ++i)
                         p[i] -= 1;
                     object.addLine3d({ p[0], p[3] });
@@ -90,10 +111,14 @@ object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
 
                     object.addFace3d({ 0, p[0], p[3], p[6], p[9] }); // replace 0 with normal!!!!!!
                 }
-                else if (sscanf(currentLine.mid(2), "%d/%d/%d %d/%d/%d %d/%d/%d\n", &p[0], &p[1], &p[2],
-                                &p[3], &p[4], &p[5], &p[6], &p[7], &p[8])
-                         == 9)
+                else if (values.size() == 3)
                 {
+                    QList<QByteArray> values2;
+                    for (uint i = 0, j = 0; i < 3; ++i, j += 3)
+                    {
+                        values2 = values[i].split('/');
+                        p[j] = values2[0].toUInt();
+                    }
                     for (uint i = 0; i < 12; ++i)
                         p[i] -= 1;
                     object.addLine3d({ p[0], p[3] });
@@ -102,8 +127,6 @@ object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
 
                     object.addTriangle3d({ 0, p[0], p[3], p[6] }); // replace 0 with normal!!!!
                 }
-                else
-                    qDebug() << "[Error] Error when parsing face from obj";
             }
         }
         objFile.close();

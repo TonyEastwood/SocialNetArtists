@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     qDebug() << "Start";
     ObjectParseManager parser;
     // object3d testObject = parser.fromStlToObject("test.stl");
+
     object3d testObject2 = parser.fromObjToObject("cube.obj");
     MainWindow w;
     MainAppWindow ew(testObject2);
