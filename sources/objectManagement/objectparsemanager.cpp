@@ -58,35 +58,55 @@ object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
         object.setHeaderInfo("ObjFile"); // set header info
         QByteArray currentLine;
         float x, y, z;
-        uint p1, p2, p3, p4;
+        uint p[12] = { 0 };
         while (!objFile.atEnd())
         {
             currentLine = objFile.readLine();
 
             if (currentLine[0] == 'v')
             {
+                if (currentLine[1] == 't' || currentLine[1] == 'n')
+                    continue;
                 sscanf(currentLine.mid(2), "%f %f %f\n", &x, &y, &z);
                 object.addVertex3d({ x, y, z });
             }
             else if (currentLine[0] == 'l')
             {
-                sscanf(currentLine.mid(2), "%d %d\n", &p1, &p2);
-                object.addLine3d({ p1, p2 });
+                sscanf(currentLine.mid(2), "%d %d\n", &p[0], &p[1]);
+                object.addLine3d({ p[0], p[1] });
             }
             else if (currentLine[0] == 'f')
             {
-                if (sscanf(currentLine.mid(2), "%d/ %d/ %d/ %d/\n", &p1, &p2, &p3, &p4) == 4)
+                if (sscanf(currentLine.mid(2), "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", &p[0], &p[1], &p[2],
+                           &p[3], &p[4], &p[5], &p[6], &p[7], &p[8], &p[9], &p[10], &p[11])
+                    == 12)
                 {
-                    object.addFace3d({ 0, p1, p2, p3, p4 }); // replace 0 with normal!!!!!!
+                    for (uint i = 0; i < 12; ++i)
+                        p[i] -= 1;
+                    object.addLine3d({ p[0], p[3] });
+                    object.addLine3d({ p[3], p[6] });
+                    object.addLine3d({ p[6], p[9] });
+                    object.addLine3d({ p[0], p[9] });
+
+                    object.addFace3d({ 0, p[0], p[3], p[6], p[9] }); // replace 0 with normal!!!!!!
                 }
-                else if (sscanf(currentLine.mid(2), "%d/ %d/ %d/\n", &p1, &p2, &p3) == 3)
+                else if (sscanf(currentLine.mid(2), "%d/%d/%d %d/%d/%d %d/%d/%d\n", &p[0], &p[1], &p[2],
+                                &p[3], &p[4], &p[5], &p[6], &p[7], &p[8])
+                         == 9)
                 {
-                    object.addTriangle3d({ 0, p1, p2, p3 }); // replace 0 with normal!!!!
+                    for (uint i = 0; i < 12; ++i)
+                        p[i] -= 1;
+                    object.addLine3d({ p[0], p[3] });
+                    object.addLine3d({ p[3], p[6] });
+                    object.addLine3d({ p[6], p[0] });
+
+                    object.addTriangle3d({ 0, p[0], p[3], p[6] }); // replace 0 with normal!!!!
                 }
                 else
                     qDebug() << "[Error] Error when parsing face from obj";
             }
         }
+        objFile.close();
     }
     else
         qDebug() << "Cannot open the file " << fileName;

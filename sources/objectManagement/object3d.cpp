@@ -78,14 +78,12 @@ unsigned int object3d::getCurrentFaceIndex() const
  */
 void object3d::addTriangle3d(const primitives::triangle3d _triangle)
 {
-    setMaxOriginAxis(vertex3dData[_triangle.indexVertex1]);
-    setMaxOriginAxis(vertex3dData[_triangle.indexVertex2]);
-    setMaxOriginAxis(vertex3dData[_triangle.indexVertex3]);
     triangles3dData.push_back(_triangle);
 }
 
 void object3d::addVertex3d(const primitives::point3d _vertex)
 {
+    setMaxOriginAxis(_vertex);
     vertex3dData.push_back(_vertex);
 }
 
