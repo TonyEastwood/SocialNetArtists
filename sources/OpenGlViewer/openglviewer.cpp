@@ -3,7 +3,7 @@
 #include "ui_openglviewer.h"
 #include <QDebug>
 
-OpenGlViewer::OpenGlViewer(object3d _object, QWidget *parent)
+OpenGlViewer::OpenGlViewer(Object3d _object, QWidget *parent)
     : QGLWidget(parent)
 {
     ui->setupUi(this);
@@ -117,12 +117,12 @@ void OpenGlViewer::paintGL()
 
     // cube();
 
-    std::vector<primitives::point3d> vertexData =
+    std::vector<primitives::Point3d> vertexData =
         drawObject.getVertex3dData(); // load vertex data from object
 
     if (!drawObject.getFaces3dData().empty()) // if array of faces not empty -> draw faces
     {
-        std::vector<primitives::face3d> facesData = drawObject.getFaces3dData(); // load faces from object
+        std::vector<primitives::Face3d> facesData = drawObject.getFaces3dData(); // load faces from object
         uint quantityFaces3d = drawObject.getQuantityFaces3d();                  // get quantity lines
 
         glBegin(GL_QUADS);           // START FACES DRAWING
@@ -143,7 +143,7 @@ void OpenGlViewer::paintGL()
     }
     if (!drawObject.getTrianglesData().empty()) // if triangle array not empty -> draw triangles
     {
-        std::vector<primitives::triangle3d> trianglesData =
+        std::vector<primitives::Triangle3d> trianglesData =
             drawObject.getTrianglesData();                              // get triangles data from object
         uint quantityTrianlges3d = drawObject.getQuantityTriangles3d(); // get quantity of triangles
 
@@ -167,7 +167,7 @@ void OpenGlViewer::paintGL()
 
     if (!drawObject.getLines3dData().empty()) // if lines array not empty -> draw lines
     {
-        std::vector<primitives::line3d> linesData =
+        std::vector<primitives::Line3d> linesData =
             drawObject.getLines3dData();                        // load lines data from object
         uint quantityLines3d = drawObject.getQuantityLines3d(); // get quantity lines
         glLineWidth(20);                                        // set line width

@@ -13,9 +13,9 @@ ObjectParseManager::~ObjectParseManager()
       detail...
  */
 
-object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
+Object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
 {
-    object3d object;
+    Object3d object;
 
     QFile stlFile(fileName);
     if (stlFile.open(QIODevice::ReadOnly))
@@ -36,7 +36,7 @@ object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
             object.addLine3d({ currentVertexIndex - 2, currentVertexIndex }); // add line (point1 and point3)
             object.addLine3d({ currentVertexIndex - 1, currentVertexIndex }); // add line (point1 and point2)
 
-            object.addTriangle3d(primitives::triangle3d(currentVertexIndex - 3, currentVertexIndex - 2,
+            object.addTriangle3d(primitives::Triangle3d(currentVertexIndex - 3, currentVertexIndex - 2,
                                                         currentVertexIndex - 1,
                                                         currentVertexIndex)); // add triangle3d to triangle3d
                                                                               // array that object contain
@@ -51,9 +51,9 @@ object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
 }
 
 // convert file obj to object
-object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
+Object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
 {
-    object3d object;
+    Object3d object;
 
     QFile objFile(fileName);
     if (objFile.open(QIODevice::ReadOnly))
@@ -149,7 +149,7 @@ float ObjectParseManager::toFloat(const QByteArray bytes)
 
       detail...
  */
-primitives::point3d ObjectParseManager::to3dPoint(QByteArray bytes)
+primitives::Point3d ObjectParseManager::to3dPoint(QByteArray bytes)
 {
-    return primitives::point3d(toFloat(bytes.mid(0, 4)), toFloat(bytes.mid(4, 8)), toFloat(bytes.mid(8, 12)));
+    return primitives::Point3d(toFloat(bytes.mid(0, 4)), toFloat(bytes.mid(4, 8)), toFloat(bytes.mid(8, 12)));
 }

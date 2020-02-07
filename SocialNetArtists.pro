@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    sources/objectManagement/objectstoragemanager.cpp \
     main.cpp \
     sources/mainappwindow.cpp \
     sources/mainwindow.cpp \
@@ -31,7 +32,8 @@ HEADERS += \
     headers/objectManagement/objectDataStructures.h \
     headers/objectManagement/objectinterface.h \
     headers/objectManagement/objectparsemanager.h \
-    headers/OpenGlViewer/openglviewer.h
+    headers/OpenGlViewer/openglviewer.h \
+    headers/objectManagement/objectstoragemanager.h
 
 FORMS += \
     ui/mainappwindow.ui \

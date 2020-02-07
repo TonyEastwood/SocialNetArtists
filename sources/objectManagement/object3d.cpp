@@ -1,11 +1,11 @@
 #include "../../headers/objectManagement/object3d.h"
 
-object3d::object3d()
+Object3d::Object3d()
 {
     headerInfo = "default";
 }
 
-object3d::~object3d()
+Object3d::~Object3d()
 {
 }
 /*!
@@ -13,7 +13,7 @@ object3d::~object3d()
 
       detail...
  */
-QByteArray object3d::getHeaderInfo() const
+QByteArray Object3d::getHeaderInfo() const
 {
     return headerInfo;
 }
@@ -22,112 +22,112 @@ QByteArray object3d::getHeaderInfo() const
 
       detail...
  */
-void object3d::setHeaderInfo(const QByteArray &value)
+void Object3d::setHeaderInfo(const QByteArray &value)
 {
     headerInfo = value;
 }
 
-unsigned int object3d::getQuantityVertex3d() const
+unsigned int Object3d::getQuantityVertex3d() const
 {
     return vertex3dData.size();
 }
 
-unsigned int object3d::getQuantityLines3d() const
+unsigned int Object3d::getQuantityLines3d() const
 {
     return lines3dData.size();
 }
 /*!
-     \brief get quantity triangle3d.
+     \brief get quantity Triangle3d.
 
       detail...
  */
-unsigned int object3d::getQuantityTriangles3d() const
+unsigned int Object3d::getQuantityTriangles3d() const
 {
     return triangles3dData.size();
 }
 
-unsigned int object3d::getQuantityFaces3d() const
+unsigned int Object3d::getQuantityFaces3d() const
 {
     return faces3dData.size();
 }
 
-unsigned int object3d::getCurrentVertexIndex() const
+unsigned int Object3d::getCurrentVertexIndex() const
 {
     return vertex3dData.size() - 1;
 }
 
-unsigned int object3d::getCurrentLineIndex() const
+unsigned int Object3d::getCurrentLineIndex() const
 {
     return lines3dData.size() - 1;
 }
 
-unsigned int object3d::getCurrentTriangleIndex() const
+unsigned int Object3d::getCurrentTriangleIndex() const
 {
     return triangles3dData.size() - 1;
 }
 
-unsigned int object3d::getCurrentFaceIndex() const
+unsigned int Object3d::getCurrentFaceIndex() const
 {
     return faces3dData.size() - 1;
 }
 /*!
-     \brief set quantity triangle3d.
+     \brief set quantity Triangle3d.
 
       detail...
  */
 
 /*!
-     \brief add triangle to triangle3d array current object.
+     \brief add triangle to Triangle3d array current object.
 
       detail...
  */
-void object3d::addTriangle3d(const primitives::triangle3d _triangle)
+void Object3d::addTriangle3d(const primitives::Triangle3d _triangle)
 {
     triangles3dData.push_back(_triangle);
 }
 
-void object3d::addVertex3d(const primitives::point3d _vertex)
+void Object3d::addVertex3d(const primitives::Point3d _vertex)
 {
     setMaxOriginAxis(_vertex);
     vertex3dData.push_back(_vertex);
 }
 
-void object3d::addLine3d(const primitives::line3d _line)
+void Object3d::addLine3d(const primitives::Line3d _line)
 {
     lines3dData.push_back(_line);
 }
 
-void object3d::addFace3d(const primitives::face3d _face)
+void Object3d::addFace3d(const primitives::Face3d _face)
 {
     faces3dData.push_back(_face);
 }
 
-std::vector<primitives::triangle3d> object3d::getTrianglesData()
+std::vector<primitives::Triangle3d> Object3d::getTrianglesData()
 {
     return triangles3dData;
 }
 
-primitives::point3d object3d::getMaxOriginAxis() const
+primitives::Point3d Object3d::getMaxOriginAxis() const
 {
     return maxOriginAxis;
 }
 
-std::vector<primitives::point3d> object3d::getVertex3dData() const
+std::vector<primitives::Point3d> Object3d::getVertex3dData() const
 {
     return vertex3dData;
 }
 
-std::vector<primitives::line3d> object3d::getLines3dData() const
+std::vector<primitives::Line3d> Object3d::getLines3dData() const
 {
     return lines3dData;
 }
 
-std::vector<primitives::face3d> object3d::getFaces3dData() const
+std::vector<primitives::Face3d> Object3d::getFaces3dData() const
 {
     return faces3dData;
 }
 
-void object3d::setMaxOriginAxis(const primitives::point3d _point)
+void Object3d::setMaxOriginAxis(const primitives::Point3d _point)
 {
     if (maxOriginAxis.x < abs(_point.x))
         maxOriginAxis.x = abs(_point.x);

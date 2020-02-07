@@ -8,9 +8,9 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     qDebug() << "Start";
     ObjectParseManager parser;
-    // object3d testObject = parser.fromStlToObject("test.stl");
+    // Object3d testObject = parser.fromStlToObject("test.stl");
 
-    object3d testObject2 = parser.fromObjToObject("cube.obj");
+    Object3d testObject2 = parser.fromObjToObject("cube.obj");
     MainWindow w;
     MainAppWindow ew(testObject2);
     ew.show();

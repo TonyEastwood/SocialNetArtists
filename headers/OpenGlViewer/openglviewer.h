@@ -19,7 +19,7 @@ class OpenGlViewer : public QGLWidget, protected QOpenGLFunctions
     Q_OBJECT
 
 public:
-    explicit OpenGlViewer(object3d _object, QWidget *parent = nullptr);
+    explicit OpenGlViewer(Object3d _object, QWidget *parent = nullptr);
     ~OpenGlViewer() override;
 
 protected:
@@ -35,7 +35,7 @@ protected:
 
 private:
     int openGlwidth, openGlheight;          // window size
-    object3d drawObject;                    // object that need to draw
+    Object3d drawObject;                    // object that need to draw
     float x_pos, y_pos, rotate_y, rotate_x; // rotate values
     int scaleWheel = 2;                     // current scale (zoom in\zoom out)
     Ui::OpenGlViewer *ui;

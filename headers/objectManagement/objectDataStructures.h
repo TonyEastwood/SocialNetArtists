@@ -1,9 +1,9 @@
 #ifndef OBJECTDATASTRUCTURES_H
 #define OBJECTDATASTRUCTURES_H
 namespace primitives {
-struct point3d // point that contain its coords (x,y,z)
+struct Point3d // point that contain its coords (x,y,z)
 {
-    point3d(float _x, float _y, float _z)
+    Point3d(float _x, float _y, float _z)
         : x(_x)
         , y(_y)
         , z(_z)
@@ -14,9 +14,9 @@ struct point3d // point that contain its coords (x,y,z)
     float z;
 };
 
-struct line3d // line that contain index on vertex that form it (index mean index in vertex array)
+struct Line3d // line that contain index on vertex that form it (index mean index in vertex array)
 {
-    line3d(unsigned int _indexVertex1, unsigned int _indexVertex2)
+    Line3d(unsigned int _indexVertex1, unsigned int _indexVertex2)
         : indexVertex1(_indexVertex1)
         , indexVertex2(_indexVertex2)
     {
@@ -25,9 +25,9 @@ struct line3d // line that contain index on vertex that form it (index mean inde
     unsigned int indexVertex2; // index second point
 };
 
-struct triangle3d // triangle that contain index on vertex that form it
+struct Triangle3d // triangle that contain index on vertex that form it
 {
-    triangle3d(unsigned int _indexNormal, unsigned int _indexVertex1, unsigned int _indexVertex2,
+    Triangle3d(unsigned int _indexNormal, unsigned int _indexVertex1, unsigned int _indexVertex2,
                unsigned int _indexVertex3)
         : indexNormal(_indexNormal)
         , indexVertex1(_indexVertex1)
@@ -41,9 +41,9 @@ struct triangle3d // triangle that contain index on vertex that form it
     unsigned int indexVertex3; // index third point
 };
 
-struct face3d // face that contain index on vertex that form it
+struct Face3d // face that contain index on vertex that form it
 {
-    face3d(unsigned int _indexNormal, unsigned int _indexVertex1, unsigned int _indexVertex2,
+    Face3d(unsigned int _indexNormal, unsigned int _indexVertex1, unsigned int _indexVertex2,
            unsigned int _indexVertex3, unsigned int _indexVertex4)
         : indexNormal(_indexNormal)
         , indexVertex1(_indexVertex1)

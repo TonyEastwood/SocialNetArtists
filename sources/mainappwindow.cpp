@@ -3,7 +3,7 @@
 
 #include <QLabel>
 
-MainAppWindow::MainAppWindow(object3d _object, QWidget *parent)
+MainAppWindow::MainAppWindow(Object3d _object, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainAppWindow)
 {
