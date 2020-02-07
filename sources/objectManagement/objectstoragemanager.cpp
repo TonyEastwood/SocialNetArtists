@@ -3,8 +3,9 @@
 ObjectStorageManager::ObjectStorageManager(const QByteArray storageName)
     : objectStorageDir((storageName))
 {
+    objectStorageDir = globalObjectStorageName + objectStorageDir;
     Initialize();
-    QDir().mkdir(objectStorageDir); // create directory for objects storage
+    QDir().mkpath(objectStorageDir); // create directory for objects storage
 }
 
 QByteArray ObjectStorageManager::getObjectStorageDir() const
@@ -83,27 +84,15 @@ bool ObjectStorageManager::addNewObject(Object3d newObject)
     return false;
 }
 
-void ObjectStorageManager::Initialize()
-{
-    loadObjectsToList();
-}
-
-void ObjectStorageManager::loadObjectsToList()
-{
-    if (!QDir(objectStorageDir).exists())
-        return;
-
-    QStringList objectList = QDir(objectStorageDir).entryList(QDir::Files);
-    for (auto objectName : objectList)
-        objectsList.push_back(objectName);
-}
-
-Object3d ObjectStorageManager::getObjectByName(QString objectName)
+Object3d ObjectStorageManager::getObjectFromListByName(QString objectName)
 {
     objectName += ".object";
     QFile objectFile(objectStorageDir + '/' + objectName);
     if (!objectFile.exists())
+    {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "File non exist " << objectFile;
         return Object3d();
+    }
     if (objectFile.open(QIODevice::ReadOnly))
     {
         Object3d objectResult;
@@ -207,6 +196,26 @@ Object3d ObjectStorageManager::getObjectByName(QString objectName)
     else
         qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "Can't open the file " << objectFile;
     return Object3d();
+}
+
+std::vector<QString> ObjectStorageManager::getObjectsList() const
+{
+    return objectsList;
+}
+
+void ObjectStorageManager::Initialize()
+{
+    loadObjectsToList();
+}
+
+void ObjectStorageManager::loadObjectsToList()
+{
+    if (!QDir(objectStorageDir).exists())
+        return;
+
+    QStringList objectList = QDir(objectStorageDir).entryList(QDir::Files);
+    for (auto objectName : objectList)
+        objectsList.push_back(objectName.split('.')[0]);
 }
 
 ObjectStorageManager::~ObjectStorageManager()
