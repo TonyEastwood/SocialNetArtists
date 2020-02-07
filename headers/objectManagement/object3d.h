@@ -11,8 +11,8 @@ public:
     Object3d();
     ~Object3d();
 
-    QByteArray getHeaderInfo() const;
-    void setHeaderInfo(const QByteArray &value);
+    QByteArray getName() const;
+    void setObjectName(const QByteArray &value);
 
     unsigned int getQuantityVertex3d() const;    // return vertex array size
     unsigned int getQuantityLines3d() const;     // return lines array size
@@ -37,7 +37,8 @@ public:
     primitives::Point3d getMaxOriginAxis() const;
 
 private:
-    QByteArray headerInfo;
+    QByteArray objectName; // must contain only letters and numbs:
+    // obJect1 || SomeObject23234,
 
     std::vector<primitives::Point3d> vertex3dData;       // data that contain vertex coords
     std::vector<primitives::Line3d> lines3dData;         // data that contain lines

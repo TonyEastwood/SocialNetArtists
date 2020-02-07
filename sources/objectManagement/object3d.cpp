@@ -2,7 +2,7 @@
 
 Object3d::Object3d()
 {
-    headerInfo = "default";
+    objectName = "default";
 }
 
 Object3d::~Object3d()
@@ -13,18 +13,18 @@ Object3d::~Object3d()
 
       detail...
  */
-QByteArray Object3d::getHeaderInfo() const
+QByteArray Object3d::getName() const
 {
-    return headerInfo;
+    return objectName;
 }
 /*!
      \brief set header info.
 
       detail...
  */
-void Object3d::setHeaderInfo(const QByteArray &value)
+void Object3d::setObjectName(const QByteArray &value)
 {
-    headerInfo = value;
+    objectName = value;
 }
 
 unsigned int Object3d::getQuantityVertex3d() const
