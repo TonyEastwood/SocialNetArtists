@@ -4,10 +4,10 @@ ObjectStorageManager::ObjectStorageManager(const QByteArray storageName)
     : objectStorageDir((storageName))
 {
     Initialize();
-    QDir().mkdir(objectStorageDir.dirName()); // create directory for objects storage
+    QDir().mkdir(objectStorageDir); // create directory for objects storage
 }
 
-QDir ObjectStorageManager::getObjectStorageDir() const
+QByteArray ObjectStorageManager::getObjectStorageDir() const
 {
     return objectStorageDir;
 }
@@ -22,7 +22,7 @@ bool ObjectStorageManager::addNewObject(Object3d newObject)
     // Format file object:
     // objectName quantityVertex quantityLines quantityTriangles quantityQuads
 
-    QFile newObjectFile(objectStorageDir.path() + '/' + newObject.getName() + ".object");
+    QFile newObjectFile(objectStorageDir + '/' + newObject.getName() + ".object");
     if (newObjectFile.open(QIODevice::WriteOnly))
     {
         newObjectFile.write(newObject.getName() + ' ' + QByteArray::number(newObject.getQuantityVertex3d())
@@ -75,7 +75,7 @@ bool ObjectStorageManager::addNewObject(Object3d newObject)
         }
 
         newObjectFile.close();
-        objectsList.push_back(newObjectFile.fileName());
+        objectsList.push_back(newObject.getName()); // add object to list
         return true;
     }
     else
@@ -90,13 +90,125 @@ void ObjectStorageManager::Initialize()
 
 void ObjectStorageManager::loadObjectsToList()
 {
-    if (!objectStorageDir.exists())
+    if (!QDir(objectStorageDir).exists())
         return;
 
-    QStringList objectList = objectStorageDir.entryList(QDir::Files);
+    QStringList objectList = QDir(objectStorageDir).entryList(QDir::Files);
     for (auto objectName : objectList)
         objectsList.push_back(objectName);
 }
+
+Object3d ObjectStorageManager::getObjectByName(QString objectName)
+{
+    objectName += ".object";
+    QFile objectFile(objectStorageDir + '/' + objectName);
+    if (!objectFile.exists())
+        return Object3d();
+    if (objectFile.open(QIODevice::ReadOnly))
+    {
+        Object3d objectResult;
+        QByteArray currentLine;
+        QList<QByteArray> tempValues; // list that will contain parsed data
+        QList<QByteArray> values;     // list that will contain parsed data
+        //        uint quantityVertex = 0, quantityLines = 0, quantityTriangles = 0, quantityFaces = 0;
+
+        currentLine = objectFile.readLine();
+
+        values = currentLine.trimmed().split(' ');
+        if (values.size() != 5) // see format file .object
+        {
+            qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "First line size!=5";
+            objectFile.close();
+            return Object3d();
+        }
+
+        objectResult.setObjectName(values[0]); // set objectName
+
+        // read all vertex from file and write it to object
+        {
+
+            uint quantityVertex = values[1].toUInt(); // get quantity vertex
+            for (uint i = 0; i < quantityVertex; i++) // parse all lines that contain vertex
+            {
+                currentLine = objectFile.readLine();
+                tempValues = currentLine.trimmed().split(' '); // parse each line on vertex coords
+                if (tempValues.size() != 3)
+                {
+                    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "Vertex size!=3";
+                    objectFile.close();
+                    return Object3d();
+                }
+                objectResult.addVertex3d({ tempValues[0].toFloat(), tempValues[1].toFloat(),
+                                           tempValues[2].toFloat() }); // add vertex to object
+            }
+        }
+
+        // read all lines from file and write it to object
+        {
+            uint quantityLines = values[2].toUInt(); // get quantity of lines that contain line data
+
+            for (uint i = 0; i < quantityLines; i++) // parse all lines that contain line data
+            {
+                currentLine = objectFile.readLine();
+                tempValues = currentLine.trimmed().split(' '); // parse line on data
+                if (tempValues.size() != 2)
+                {
+                    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "Line size!=2";
+                    objectFile.close();
+                    return Object3d();
+                }
+                objectResult.addLine3d(
+                    { tempValues[0].toUInt(), tempValues[1].toUInt() }); // add line to object array
+            }
+        }
+
+        // read all triangles from file and write it to object
+        {
+            uint quantityTriangles = values[3].toUInt(); // get quantity triangles
+            for (uint i = 0; i < quantityTriangles; i++) // parse data on triangles
+            {
+                currentLine = objectFile.readLine();
+                tempValues = currentLine.trimmed().split(' ');
+                if (tempValues.size() != 3)
+                {
+                    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "Triangles size!=3";
+                    objectFile.close();
+                    return Object3d();
+                }
+                // add triangle in object array
+                objectResult.addTriangle3d(
+                    { 0, tempValues[0].toUInt(), tempValues[1].toUInt(),
+                      tempValues[2].toUInt() }); // need to add normal as first element!!!
+            }
+        }
+
+        // read all faces from file and write it to object
+        {
+            uint quantityFaces = values[4].toUInt(); // get quantity faces
+            for (uint i = 0; i < quantityFaces; i++) // parse data on faces
+            {
+                currentLine = objectFile.readLine();
+                tempValues = currentLine.trimmed().split(' ');
+                if (tempValues.size() != 4)
+                {
+                    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "Faces size!=4";
+                    objectFile.close();
+                    return Object3d();
+                }
+                // add face to object faces array
+                objectResult.addFace3d({ 0, tempValues[0].toUInt(), tempValues[1].toUInt(),
+                                         tempValues[2].toUInt(),
+                                         tempValues[3].toUInt() }); // need to add normal as first element!!!
+            }
+        }
+        objectFile.close();
+        return objectResult; // return object that filled all data
+    }
+    else
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "Can't open the file " << objectFile;
+    return Object3d();
+}
+
 ObjectStorageManager::~ObjectStorageManager()
 {
 }

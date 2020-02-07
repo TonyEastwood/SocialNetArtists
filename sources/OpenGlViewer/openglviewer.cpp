@@ -170,7 +170,7 @@ void OpenGlViewer::paintGL()
         std::vector<primitives::Line3d> linesData =
             drawObject.getLines3dData();                        // load lines data from object
         uint quantityLines3d = drawObject.getQuantityLines3d(); // get quantity lines
-        glLineWidth(20);                                        // set line width
+        glLineWidth(1);                                         // set line width
         glBegin(GL_LINES);                                      // START LINES DRAWING
         glColor3f(1.0f, 0.0f, 0.0f);                            // set line color
         for (uint i = 0; i < quantityLines3d; ++i)
