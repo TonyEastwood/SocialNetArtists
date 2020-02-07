@@ -27,9 +27,9 @@ protected:
     void resizeGL(int w, int h) override;
     void paintGL() override;
     void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override; // object roration
     void mouseReleaseEvent(QMouseEvent *e) override;
-    void wheelEvent(QWheelEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override; // object scale
 
     // void timerEvent(QTimerEvent *e) override;
 
@@ -37,7 +37,7 @@ private:
     int openGlwidth, openGlheight;          // window size
     object3d drawObject;                    // object that need to draw
     float x_pos, y_pos, rotate_y, rotate_x; // rotate values
-    int scaleWheel = 1;
+    int scaleWheel = 2;                     // current scale (zoom in\zoom out)
     Ui::OpenGlViewer *ui;
 };
 

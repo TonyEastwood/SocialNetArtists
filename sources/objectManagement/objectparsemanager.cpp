@@ -12,6 +12,7 @@ ObjectParseManager::~ObjectParseManager()
 
       detail...
  */
+
 object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
 {
     object3d object;
@@ -26,7 +27,7 @@ object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
         for (uint i = 0; i < quantitytriangle3d; ++i)
         {
             for (int j = 0; j < 4; ++j)
-                object.addVertex3d(to3dPoint(stlFile.read(12))); // add vertex to data
+                object.addVertex3d(to3dPoint(stlFile.read(12))); // add coords to vertex array
 
             currentVertexIndex = object.getCurrentVertexIndex(); // get current vertex index
 
@@ -39,7 +40,8 @@ object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
                                                         currentVertexIndex - 1,
                                                         currentVertexIndex)); // add triangle3d to triangle3d
                                                                               // array that object contain
-            stlFile.read(2);                                                  // miss two bytes
+
+            stlFile.read(2); // miss two bytes
         }
         stlFile.close();
     }
@@ -48,6 +50,7 @@ object3d ObjectParseManager::fromStlToObject(const QByteArray fileName)
     return object;
 }
 
+// convert file obj to object
 object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
 {
     object3d object;
@@ -56,9 +59,10 @@ object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
     if (objFile.open(QIODevice::ReadOnly))
     {
         QList<QByteArray> values; // values that will contains parse data
-        QByteArray currentLine;
-        float x, y, z;
-        uint p[12] = { 0 };
+        QByteArray currentLine;   // temp data
+        float x, y, z;            // temp data
+        uint p[12] = { 0 };       // temp data
+
         while (!objFile.atEnd())
         {
             currentLine = objFile.readLine();
@@ -75,7 +79,7 @@ object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
                 y = values[1].toFloat();
                 z = values[2].toFloat();
 
-                object.addVertex3d({ x, y, z }); // add vertex to array
+                object.addVertex3d({ x, y, z }); // add coords to vertex array
             }
             else if (currentLine[0] == 'l') // if current line contains data about line3d
             {
@@ -108,7 +112,7 @@ object3d ObjectParseManager::fromObjToObject(const QByteArray fileName)
                 }
                 else if (values.size() == 3) // if current data relate to triangles
                 {
-                    for (uint i = 0, j = 0; i < 3; ++i, j += 3)
+                    for (int i = 0, j = 0; i < 3; ++i, j += 3)
                     {
                         valuesAfterFaceParse = values[i].split('/'); // parse each vertex in triangles
                         p[j] = valuesAfterFaceParse[0].toUInt();     // get vertex index

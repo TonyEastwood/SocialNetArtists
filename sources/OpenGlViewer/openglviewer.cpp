@@ -7,7 +7,7 @@ OpenGlViewer::OpenGlViewer(object3d _object, QWidget *parent)
     : QGLWidget(parent)
 {
     ui->setupUi(this);
-    drawObject = _object;
+    drawObject = _object;                    // get object that need to draw
     openGlwidth = 500;                       // window width
     openGlheight = 500;                      // window height
     setFormat(QGLFormat(QGL::DoubleBuffer)); // double buff
@@ -104,7 +104,9 @@ void OpenGlViewer::paintGL()
     glOrtho(-scaleWheel * drawObject.getMaxOriginAxis().x, scaleWheel * drawObject.getMaxOriginAxis().x,
             scaleWheel * drawObject.getMaxOriginAxis().y, -scaleWheel * drawObject.getMaxOriginAxis().y,
             -scaleWheel * drawObject.getMaxOriginAxis().z,
-            scaleWheel * drawObject.getMaxOriginAxis().z); // set matrix scope (2*x,2*y,2*z)
+            scaleWheel
+                * drawObject.getMaxOriginAxis()
+                      .z); // set matrix scope. Need get opportunity to scale (zoom in\out)
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -127,7 +129,7 @@ void OpenGlViewer::paintGL()
         glColor3f(0.0f, 1.0f, 1.0f); // set faces color
         for (uint i = 0; i < quantityFaces3d; ++i)
         {
-
+            // draw all squads:
             glVertex3f(vertexData[facesData[i].indexVertex1].x, vertexData[facesData[i].indexVertex1].y,
                        vertexData[facesData[i].indexVertex1].z);
             glVertex3f(vertexData[facesData[i].indexVertex2].x, vertexData[facesData[i].indexVertex2].y,
@@ -149,6 +151,7 @@ void OpenGlViewer::paintGL()
         glColor3f(1.0f, 1.0f, 0.0f); // set triangles color
         for (uint i = 0; i < quantityTrianlges3d; ++i)
         {
+            // draw all triangles:
             glVertex3f(vertexData[trianglesData[i].indexVertex1].x,
                        vertexData[trianglesData[i].indexVertex1].y,
                        vertexData[trianglesData[i].indexVertex1].z);
@@ -172,6 +175,7 @@ void OpenGlViewer::paintGL()
         glColor3f(1.0f, 0.0f, 0.0f);                            // set line color
         for (uint i = 0; i < quantityLines3d; ++i)
         {
+            // draw all lines:
             glVertex3f(vertexData[linesData[i].indexVertex1].x, vertexData[linesData[i].indexVertex1].y,
                        vertexData[linesData[i].indexVertex1].z);
             glVertex3f(vertexData[linesData[i].indexVertex2].x, vertexData[linesData[i].indexVertex2].y,

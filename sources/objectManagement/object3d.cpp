@@ -27,6 +27,11 @@ void object3d::setHeaderInfo(const QByteArray &value)
     headerInfo = value;
 }
 
+unsigned int object3d::getQuantityVertex3d() const
+{
+    return vertex3dData.size();
+}
+
 unsigned int object3d::getQuantityLines3d() const
 {
     return lines3dData.size();
