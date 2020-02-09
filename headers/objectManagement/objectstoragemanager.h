@@ -1,33 +1,43 @@
 #ifndef OBJECTSTORAGEMANAGER_H
 #define OBJECTSTORAGEMANAGER_H
-#include <QDir>
-#include "object3d.h"
 #include <QDebug>
-class ObjectStorageManager
-{
-public:
-    ObjectStorageManager(const QByteArray storageName); //+
-    ~ObjectStorageManager();                            //+
+#include <QDir>
 
-    QByteArray getObjectStorageDir() const;   //+
-    uint getQuantityObjectsInStorage() const; //+
+#include "object3d.h"
+class ObjectStorageManager {
+ public:
+  ObjectStorageManager(const QByteArray storageName);
+  ~ObjectStorageManager();
 
-    bool addNewObject(Object3d newObject); //+
+  QByteArray getObjectStorageDir() const;
+  uint getQuantityObjectsInStorage() const;
 
-    Object3d getObjectFromListByName(
-        QString objectName); // get 3d object from list by name format: 'blablabla' without format .object
+  bool addNewObject(Object3d newObject);
+  void removeObject(QString objectName);
 
-    std::vector<QString> getObjectsList() const; // get list of all objects
+  Object3d getObjectFromListByName(
+      QString objectName);  // get 3d object from list by name format:
+                            // 'blablabla' without format .object
 
-private:
-    const QByteArray globalObjectStorageName = "objectsStorage/";
-    QByteArray objectStorageDir; // directory name that contain current objects storage
+  Object3d getObjectFromListByIndex(
+      uint objectIndex);  // get 3d object from list by index in this list
 
-    std::vector<QString> objectsList; // 3d objects list that loaded during initialization
+  std::vector<QString> getObjectsList() const;  // get list of all objects
 
-private:
-    void Initialize();        //+
-    void loadObjectsToList(); //+
+ private:
+  const QByteArray globalObjectStorageName = "objectsStorage/";
+  QByteArray objectStorageDir;  // directory name that contain current objects
+                                // storage format: objectsStorage/storagedir
+
+  QString findUniqueFileName(
+      QString path);  // count filename by 1, while it will non-exist
+
+  std::vector<QString>
+      objectsList;  // 3d objects list that loaded during initialization
+
+ private:
+  void Initialize();
+  void loadObjectsToList();
 };
 
-#endif // OBJECTSTORAGEMANAGER_H
+#endif  // OBJECTSTORAGEMANAGER_H
