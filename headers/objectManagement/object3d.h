@@ -53,4 +53,4 @@ private:
     void setMaxOriginAxis(const primitives::Point3d _point);
 };
 
-#endif // OBJECT3D_H
+#endif  // OBJECT3D_H

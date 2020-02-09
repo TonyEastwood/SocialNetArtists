@@ -11,6 +11,21 @@ OpenGlViewer::OpenGlViewer(Object3d _object, QWidget *parent)
   openGlwidth = 500;                        // window width
   openGlheight = 500;                       // window height
   setFormat(QGLFormat(QGL::DoubleBuffer));  // double buff
+
+  vertexData = drawObject.getVertex3dData();  // load vertex data from object
+  linesData = drawObject.getLines3dData();    // load lines data from object
+  trianglesData =
+      drawObject.getTrianglesData();        // get triangles data from object
+  facesData = drawObject.getFaces3dData();  // load faces from object
+  vertexVSize =
+      drawObject.getQuantityVertex3d();  // quantity vertex in current object
+  linesVSize =
+      drawObject.getQuantityLines3d();  // quantity lines in current object
+  trianglesVSize =
+      drawObject
+          .getQuantityTriangles3d();  // quantity triagnles in current object
+  facesVSize =
+      drawObject.getQuantityFaces3d();  // quantity faces in current object
 }
 
 OpenGlViewer::~OpenGlViewer() { delete ui; }
@@ -112,84 +127,79 @@ void OpenGlViewer::paintGL() {
   glRotatef(rotate_x, 1.0, 0.0, 0.0);  // rotate x
   glRotatef(rotate_y, 0.0, 1.0, 0.0);  // rotate y
 
-  cube();
+  // cube();
 
-  std::vector<primitives::Point3d> vertexData =
-      drawObject.getVertex3dData();  // load vertex data from object
-
-  if (!drawObject.getFaces3dData()
-           .empty())  // if array of faces not empty -> draw faces
-  {
-    std::vector<primitives::Face3d> facesData =
-        drawObject.getFaces3dData();  // load faces from object
-    uint quantityFaces3d =
-        drawObject.getQuantityFaces3d();  // get quantity lines
-
-    glBegin(GL_QUADS);            // START FACES DRAWING
-    glColor3f(0.0f, 1.0f, 1.0f);  // set faces color
-    for (uint i = 0; i < quantityFaces3d; ++i) {
-      // draw all squads:
-      glVertex3f(vertexData[facesData[i].indexVertex1].x,
-                 vertexData[facesData[i].indexVertex1].y,
-                 vertexData[facesData[i].indexVertex1].z);
-      glVertex3f(vertexData[facesData[i].indexVertex2].x,
-                 vertexData[facesData[i].indexVertex2].y,
-                 vertexData[facesData[i].indexVertex2].z);
-      glVertex3f(vertexData[facesData[i].indexVertex3].x,
-                 vertexData[facesData[i].indexVertex3].y,
-                 vertexData[facesData[i].indexVertex3].z);
-      glVertex3f(vertexData[facesData[i].indexVertex4].x,
-                 vertexData[facesData[i].indexVertex4].y,
-                 vertexData[facesData[i].indexVertex4].z);
-    }
-    glEnd();  // END TRIANGLES DRAWING
+  glBegin(GL_QUADS);            // START FACES DRAWING
+  glColor3f(0.0f, 1.0f, 1.0f);  // set faces color
+  for (uint i = 0; i < facesVSize; ++i) {
+    // draw all squads:
+    glVertex3f(vertexData[facesData[i].indexVertex1].x,
+               vertexData[facesData[i].indexVertex1].y,
+               vertexData[facesData[i].indexVertex1].z);
+    glVertex3f(vertexData[facesData[i].indexVertex2].x,
+               vertexData[facesData[i].indexVertex2].y,
+               vertexData[facesData[i].indexVertex2].z);
+    glVertex3f(vertexData[facesData[i].indexVertex3].x,
+               vertexData[facesData[i].indexVertex3].y,
+               vertexData[facesData[i].indexVertex3].z);
+    glVertex3f(vertexData[facesData[i].indexVertex4].x,
+               vertexData[facesData[i].indexVertex4].y,
+               vertexData[facesData[i].indexVertex4].z);
   }
-  if (!drawObject.getTrianglesData()
-           .empty())  // if triangle array not empty -> draw triangles
-  {
-    std::vector<primitives::Triangle3d> trianglesData =
-        drawObject.getTrianglesData();  // get triangles data from object
-    uint quantityTrianlges3d =
-        drawObject.getQuantityTriangles3d();  // get quantity of triangles
+  glEnd();  // END TRIANGLES DRAWING
 
-    glBegin(GL_TRIANGLES);        // START TRIANGLES DRAWING
-    glColor3f(1.0f, 1.0f, 0.0f);  // set triangles color
-    for (uint i = 0; i < quantityTrianlges3d; ++i) {
-      // draw all triangles:
-      glVertex3f(vertexData[trianglesData[i].indexVertex1].x,
-                 vertexData[trianglesData[i].indexVertex1].y,
-                 vertexData[trianglesData[i].indexVertex1].z);
-      glVertex3f(vertexData[trianglesData[i].indexVertex2].x,
-                 vertexData[trianglesData[i].indexVertex2].y,
-                 vertexData[trianglesData[i].indexVertex2].z);
-      glVertex3f(vertexData[trianglesData[i].indexVertex3].x,
-                 vertexData[trianglesData[i].indexVertex3].y,
-                 vertexData[trianglesData[i].indexVertex3].z);
-    }
-    glEnd();  // END TRIANGLES DRAWING
+  glPolygonMode(GL_FRONT, GL_LINE);
+  glPolygonMode(GL_BACK, GL_LINE);
+  glBegin(GL_TRIANGLES);        // START TRIANGLES DRAWING
+  glColor3f(1.0f, 1.0f, 0.0f);  // set triangles color
+  for (uint i = 0; i < trianglesVSize; ++i) {
+    // draw all triangles:
+    glVertex3f(vertexData[trianglesData[i].indexVertex1].x,
+               vertexData[trianglesData[i].indexVertex1].y,
+               vertexData[trianglesData[i].indexVertex1].z);
+    glVertex3f(vertexData[trianglesData[i].indexVertex2].x,
+               vertexData[trianglesData[i].indexVertex2].y,
+               vertexData[trianglesData[i].indexVertex2].z);
+    glVertex3f(vertexData[trianglesData[i].indexVertex3].x,
+               vertexData[trianglesData[i].indexVertex3].y,
+               vertexData[trianglesData[i].indexVertex3].z);
   }
+  glEnd();  // END TRIANGLES DRAWING
+  glPolygonMode(GL_FRONT, GL_FILL);
+  glPolygonMode(GL_BACK, GL_FILL);
 
-  if (!drawObject.getLines3dData()
-           .empty())  // if lines array not empty -> draw lines
-  {
-    std::vector<primitives::Line3d> linesData =
-        drawObject.getLines3dData();  // load lines data from object
-    uint quantityLines3d =
-        drawObject.getQuantityLines3d();  // get quantity lines
-    glLineWidth(1);                       // set line width
-    glBegin(GL_LINES);                    // START LINES DRAWING
-    glColor3f(1.0f, 0.0f, 0.0f);          // set line color
-    for (uint i = 0; i < quantityLines3d; ++i) {
-      // draw all lines:
-      glVertex3f(vertexData[linesData[i].indexVertex1].x,
-                 vertexData[linesData[i].indexVertex1].y,
-                 vertexData[linesData[i].indexVertex1].z);
-      glVertex3f(vertexData[linesData[i].indexVertex2].x,
-                 vertexData[linesData[i].indexVertex2].y,
-                 vertexData[linesData[i].indexVertex2].z);
-    }
-    glEnd();  // END LINES DRAWING
+  glBegin(GL_TRIANGLES);        // START TRIANGLES DRAWING
+  glColor3f(1.0f, 0.0f, 0.0f);  // set triangles color
+  for (uint i = 0; i < trianglesVSize; ++i) {
+    // draw all triangles:
+    glVertex3f(vertexData[trianglesData[i].indexVertex1].x,
+               vertexData[trianglesData[i].indexVertex1].y,
+               vertexData[trianglesData[i].indexVertex1].z);
+    glVertex3f(vertexData[trianglesData[i].indexVertex2].x,
+               vertexData[trianglesData[i].indexVertex2].y,
+               vertexData[trianglesData[i].indexVertex2].z);
+    glVertex3f(vertexData[trianglesData[i].indexVertex3].x,
+               vertexData[trianglesData[i].indexVertex3].y,
+               vertexData[trianglesData[i].indexVertex3].z);
   }
+  glEnd();  // END TRIANGLES DRAWING
+
+  //  // LINES COMMENTED START
+  //  glLineWidth(1);               // set line width
+  //  glBegin(GL_LINES);            // START LINES DRAWING
+  //  glColor3f(1.0f, 0.0f, 0.0f);  // set line color
+  //  for (uint i = 0; i < linesVSize; ++i) {
+  //    // draw all lines:
+  //    glVertex3f(vertexData[linesData[i].indexVertex1].x,
+  //               vertexData[linesData[i].indexVertex1].y,
+  //               vertexData[linesData[i].indexVertex1].z);
+  //    glVertex3f(vertexData[linesData[i].indexVertex2].x,
+  //               vertexData[linesData[i].indexVertex2].y,
+  //               vertexData[linesData[i].indexVertex2].z);
+  //  }
+  //  glEnd();  // END LINES DRAWING
+  //  // LINES COMMENTED END
+
   drawGrid();
   doubleBuffer();
 }

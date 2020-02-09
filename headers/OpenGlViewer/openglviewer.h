@@ -41,6 +41,15 @@ class OpenGlViewer : public QGLWidget, protected QOpenGLFunctions {
   float x_pos, y_pos, rotate_y, rotate_x;  // rotate values
   int scaleWheel = 2;                      // current scale (zoom in\zoom out)
   Ui::OpenGlViewer *ui;
+
+  std::vector<primitives::Point3d> vertexData;
+
+  std::vector<primitives::Line3d> linesData;  // load lines data from object
+
+  std::vector<primitives::Triangle3d>
+      trianglesData;                          // get triangles data from object
+  std::vector<primitives::Face3d> facesData;  // load faces from object
+  uint vertexVSize, linesVSize, trianglesVSize, facesVSize;
 };
 
 #endif  // OPENGLVIEWER_H
