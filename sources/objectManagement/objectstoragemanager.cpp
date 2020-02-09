@@ -227,10 +227,10 @@ std::vector<QString> ObjectStorageManager::getObjectsList() const {
 
 QString ObjectStorageManager::findUniqueFileName(QString path) {
   QFile tempFile;
-  int i = 0;
+  int i = -1;
   do {
-    tempFile.setFileName(path + QString::number(i) + ".object");
-    i++;
+    tempFile.setFileName(path + QString::number(++i) + ".object");
+
   } while (tempFile.exists());
   return path + QString::number(i) + ".object";
 }
