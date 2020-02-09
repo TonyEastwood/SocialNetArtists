@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
   ObjectStorageManager blabla("someDir");
   blabla.addNewObject(testObject);
-
+  Object3d qw;
   MainWindow w;
   MainAppWindow ew(blabla.getObjectFromListByName(blabla.getObjectsList()[0]));
   ew.show();
