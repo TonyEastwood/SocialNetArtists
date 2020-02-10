@@ -33,11 +33,15 @@ protected:
     void wheelEvent(QWheelEvent *event) override; // object scale
 
     // void timerEvent(QTimerEvent *e) override;
+private:
+    void drawGrid();
+
+    void drawLines();
+    void drawTriangles();
+    void drawSquads();
 
 private:
     QElapsedTimer *timerForTest;
-
-    void drawGrid();
 
     int openGlwidth, openGlheight;          // window size
     Object3d drawObject;                    // object that need to draw
@@ -52,6 +56,8 @@ private:
     std::vector<primitives::Triangle3d> trianglesData; // get triangles data from object
     std::vector<primitives::Face3d> facesData;         // load faces from object
     uint vertexVSize, linesVSize, trianglesVSize, facesVSize;
+
+    int maxOrigin;
 };
 
 #endif // OPENGLVIEWER_H

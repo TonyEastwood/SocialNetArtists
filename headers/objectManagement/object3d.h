@@ -34,7 +34,7 @@ public:
     std::vector<primitives::Triangle3d> getTrianglesData();   // get triangles array
     std::vector<primitives::Face3d> getFaces3dData() const;   // get faces array
 
-    primitives::Point3d getMaxOriginAxis() const;
+    int getMaxOriginAxis() const;
 
 private:
     QByteArray objectName; // must contain only letters and numbs:
@@ -45,12 +45,10 @@ private:
     std::vector<primitives::Triangle3d> triangles3dData; // data that contain triangles
     std::vector<primitives::Face3d> faces3dData;         // data that contain faces
 
-    primitives::Point3d maxOriginAxis{
-        0, 0, 0
-    }; // max value on axis X,Y,Z (need to set start scale in openglViewer)
+    int maxOrigin; // max value on axis X,Y,Z (need to set start scale in openglViewer)
 
 private:
     void setMaxOriginAxis(const primitives::Point3d _point);
 };
 
-#endif  // OBJECT3D_H
+#endif // OBJECT3D_H
