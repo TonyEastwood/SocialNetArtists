@@ -1,26 +1,26 @@
 #ifndef MAINAPPWINDOW_H
 #define MAINAPPWINDOW_H
 
+#include <QDebug>
 #include <QMainWindow>
-#include "OpenGlViewer/openglviewer.h"
 #include <QVBoxLayout>
 
+#include "OpenGlViewer/openglviewer.h"
 namespace Ui {
 class MainAppWindow;
 }
 
-class MainAppWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainAppWindow : public QMainWindow {
+  Q_OBJECT
 
-public:
-    explicit MainAppWindow(Object3d _object, QWidget *parent = nullptr);
-    ~MainAppWindow();
+ public:
+  explicit MainAppWindow(Object3d _object, QWidget *parent = nullptr);
+  ~MainAppWindow();
 
-private:
-    Ui::MainAppWindow *ui;
-    OpenGlViewer *openGlViewer; // openGl viewer
-    QHBoxLayout *mainLayout;
+ private:
+  Ui::MainAppWindow *ui;
+  OpenGlViewer *openGlViewer;  // openGl viewer
+  QHBoxLayout *mainLayout;
 };
 
-#endif // MAINAPPWINDOW_H
+#endif  // MAINAPPWINDOW_H
