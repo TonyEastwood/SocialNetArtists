@@ -8,8 +8,8 @@ OpenGlViewer::OpenGlViewer(Object3d _object, QWidget *parent)
     : QGLWidget(parent) {
   ui->setupUi(this);
   drawObject = _object;                     // get object that need to draw
-  openGlwidth = 500;                        // window width
-  openGlheight = 500;                       // window height
+  openGlwidth = this->width();              // window width
+  openGlheight = this->height();            // window height
   setFormat(QGLFormat(QGL::DoubleBuffer));  // double buff
 
   vertexData = drawObject.getVertex3dData();  // load vertex data from object
@@ -37,9 +37,12 @@ OpenGlViewer::~OpenGlViewer() { delete ui; }
 
 void OpenGlViewer::initializeGL() {
   initializeOpenGLFunctions();
-  glDepthFunc(GL_LEQUAL);   // buff deep
+  glDepthFunc(GL_LEQUAL);  // buff deep
+
   qglClearColor(Qt::gray);  // set background black
   glEnable(GL_DEPTH_TEST);  // line that we can't see - become invisible
+
+  glShadeModel(GL_SMOOTH);
 
   //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    //to enable
   //    transparency. In future version uncomment glEnable(GL_BLEND); //to
@@ -55,7 +58,7 @@ void OpenGlViewer::resizeGL(int w, int h) {
   openGlwidth = w;
   openGlheight = h;
 }
-void cube() {
+/*void cube() {
   float value = 100;
 
   glBegin(GL_QUADS);
@@ -108,14 +111,14 @@ void cube() {
   glVertex3f(value, -value, value);
   glVertex3f(value, -value, -value);
   glEnd();  // End of drawing color-cube
-}
+}*/
 void OpenGlViewer::paintGL() {
   timerForTest->restart();
 
   glClear(GL_COLOR_BUFFER_BIT |
           GL_DEPTH_BUFFER_BIT);  // clear buff image and deep
   glMatrixMode(GL_PROJECTION);   // set the matrix
-  glShadeModel(GL_SMOOTH);
+
   glLoadIdentity();  // load matrix
 
   glOrtho(-scaleWheel * maxOrigin, scaleWheel * maxOrigin,
@@ -124,18 +127,18 @@ void OpenGlViewer::paintGL() {
           scaleWheel * maxOrigin);  // set matrix scope. Need get opportunity to
                                     // scale (zoom in\out)
 
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
   // camera rotation
   glRotatef(rotate_x, 1.0, 0.0, 0.0);  // rotate x
   glRotatef(rotate_y, 0.0, 1.0, 0.0);  // rotate y
+
+  // grid
+  // drawGrid();
 
   // cube();
 
   glColor3f(0.0f, 0.0f, 0.0f);  // filling color (grey)
   drawSquads();                 // draw squads
-  drawTriangles();              // draw triangles outline
+  drawTriangles();              // draw triangles
 
   // DRAW LINES START
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -146,8 +149,10 @@ void OpenGlViewer::paintGL() {
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   // glPolygonMode(GL_BACK, GL_FILL);
   // LINES
-  //  drawGrid();
-  doubleBuffer();
+
+  swapBuffers();
+  glFlush();
+  // doubleBuffer();
   qDebug() << "Time= " << timerForTest->elapsed();
 }
 
@@ -181,7 +186,7 @@ void OpenGlViewer::wheelEvent(QWheelEvent *event) {
 
 void OpenGlViewer::drawGrid() {
   int gridScale = 500;  // size (width and height) all grid
-  float gridSize = 50;  // size of one cell of grid
+  float gridSize = 5;   // size of one cell of grid
   glLineWidth(1);       // width grid line
 
   glBegin(GL_LINES);            // START LINES DRAWING
@@ -189,17 +194,17 @@ void OpenGlViewer::drawGrid() {
   for (float i = -gridScale; i < gridScale; i += gridSize) {
     for (float j = -gridScale; j < gridScale; j += gridSize) {
       // draw cells
-      glVertex2f(i, j);
-      glVertex2f(i + gridSize, j);
+      glVertex3f(i, 0, j);
+      glVertex3f(i + gridSize, 0, j);
 
-      glVertex2f(i, j);
-      glVertex2f(i, j + gridSize);
+      glVertex3f(i, 0, j);
+      glVertex3f(i, 0, j + gridSize);
 
-      glVertex2f(i, j + gridSize);
-      glVertex2f(i + gridSize, j + gridSize);
+      glVertex3f(i, 0, j + gridSize);
+      glVertex3f(i + gridSize, 0, j + gridSize);
 
-      glVertex2f(i + gridSize, j + gridSize);
-      glVertex2f(i + gridSize, j);
+      glVertex3f(i + gridSize, 0, j + gridSize);
+      glVertex3f(i + gridSize, 0, j);
     }
   }
   glEnd();  // END LINES DRAWING
